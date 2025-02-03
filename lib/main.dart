@@ -6,8 +6,14 @@ import 'package:germaniatek_market/features/nav_bar/ui/main_home_view.dart';
 import 'package:germaniatek_market/features/pages/edit_name.dart';
 import 'package:germaniatek_market/features/pages/my_order.dart';
 import 'package:germaniatek_market/features/product_details/ui/product_details_view.dart';
+import 'package:germaniatek_market/shared/constant/constants.dart';
+import 'package:germaniatek_market/shared/network/local_network.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await CacheNetwork.cacheInitialization();
+  token = CacheNetwork.getCacheData(key: 'token');
+  print("My tokeen is $token");
   runApp(const MyApp());
 }
 
@@ -32,7 +38,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const LoginView(),
+      home: token != '' ? MainHomeView() : const LoginView(),
     );
   }
 }

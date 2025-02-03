@@ -34,13 +34,13 @@ class _SignupViewState extends State<SignupView> {
         listener: (context, state) {
           if (state is RegisterSuccessState) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Center(child: Text("Success Register"))));
+            content: Center(child: Text("Success Register"))));
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const LoginView()));
           } else if (state is RegisterFailureState) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Center(child: Text(state.message)),
-              backgroundColor: Color.fromARGB(255, 186, 117, 112),
+              backgroundColor: const Color.fromARGB(255, 186, 117, 112),
             ));
           }
         },

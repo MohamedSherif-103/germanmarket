@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:germaniatek_market/shared/network/local_network.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
@@ -45,12 +46,15 @@ class AuthenticateCubit extends Cubit<AuthenticateState> {
     emit(LoginLoadingState());
     try {
       Response response = await http.post(
-        Uri.parse("https://student.valuxapps.com/api/Login"),
+        Uri.parse("https://student.valuxapps.com/api/login"),
         headers: {"lang": "en"},
         body: {'email': email, 'password': password},
       );
+      print(response.body);
       var responseBody = jsonDecode(response.body);
       if (responseBody['status'] == true) {
+        await CacheNetwork.insertToCash(
+            key: 'token', value: responseBody['data']['token']);
         emit(LoginSuccessState());
       } else {
         emit(LoginFailureState(message: responseBody['message']));
