@@ -34,9 +34,7 @@ class _SignupViewState extends State<SignupView> {
         listener: (context, state) {
           if (state is RegisterSuccessState) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Center(child: Text("Success Register"))));
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const LoginView()));
+                content: Center(child: Text("Success Register"))));
           } else if (state is RegisterFailureState) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Center(child: Text(state.message)),
@@ -132,15 +130,23 @@ class _SignupViewState extends State<SignupView> {
                                 ? const CircularProgressIndicator()
                                 : CustomRow(
                                     text: "SignUp",
-                                    onPress: () {
+                                    onPress: () async {
                                       if (_formKey.currentState!.validate()) {
-                                        cubbitt.register(
+                                        bool isSuccess = await cubbitt.register(
                                           name: _nameController.text,
                                           phone: _phoneController.text,
                                           email: _emailController.text,
                                           password: _passwordController.text,
                                           image: image,
                                         );
+                                        if (isSuccess) {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const LoginView()));
+                                        }
+
                                         // Navigator.pushNamed(
                                         //     context, "LoginView");
                                       }

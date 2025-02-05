@@ -26,10 +26,8 @@ class _LoginViewState extends State<LoginView> {
       child: BlocConsumer<AuthenticateCubit, AuthenticateState>(
         listener: (context, state) {
           if (state is LoginSuccessState) {
-            // ScaffoldMessenger.of(context).showSnackBar(
-            //     const SnackBar(content: Center(child: Text("Success Login"))));
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => MainHomeView()));
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Center(child: Text("Success Login"))));
           } else if (state is LoginFailureState) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Center(child: Text(state.message)),
@@ -126,14 +124,22 @@ class _LoginViewState extends State<LoginView> {
                                   ? const CircularProgressIndicator()
                                   : CustomRow(
                                       text: "Login",
-                                      onPress: () {
+                                      onPress: () async {
                                         if (_formKey.currentState!.validate() ==
                                             true) {
-                                          cubbitt.login(
+                                          bool isSuccess = await cubbitt.login(
                                             email: _emailController.text,
                                             password: _passwordController.text,
                                           );
+                                          if (isSuccess) {
+                                            Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MainHomeView()));
+                                          }
                                         }
+
                                         // Navigator.pushReplacement(
                                         //     context,
                                         //     MaterialPageRoute(

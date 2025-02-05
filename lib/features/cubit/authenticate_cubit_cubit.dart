@@ -11,7 +11,7 @@ part 'authenticate_cubit_state.dart';
 
 class AuthenticateCubit extends Cubit<AuthenticateState> {
   AuthenticateCubit() : super(AuthenticateInitial());
-  Future<void> register(
+  Future<bool> register(
       {required String name,
       required String phone,
       required String email,
@@ -34,15 +34,18 @@ class AuthenticateCubit extends Cubit<AuthenticateState> {
       var responseBody = jsonDecode(response.body);
       if (responseBody['status'] == true) {
         emit(RegisterSuccessState());
+        return true;
       } else {
         emit(RegisterFailureState(message: responseBody['message']));
+        return false;
       }
     } catch (e) {
       emit(RegisterFailureState(message: e.toString()));
+      return false;
     }
   }
 
-  Future<void> login({required String email, required String password}) async {
+  Future<bool> login({required String email, required String password}) async {
     emit(LoginLoadingState());
     try {
       Response response = await http.post(
@@ -56,11 +59,14 @@ class AuthenticateCubit extends Cubit<AuthenticateState> {
         await CacheNetwork.insertToCash(
             key: 'token', value: responseBody['data']['token']);
         emit(LoginSuccessState());
+        return true;
       } else {
         emit(LoginFailureState(message: responseBody['message']));
+        return false;
       }
     } catch (e) {
       emit(LoginFailureState(message: e.toString()));
+      return false;
     }
   }
 }

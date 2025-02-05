@@ -98,3 +98,4 @@ class _ProfileviewState extends State<Profileview> {
                 ),
 
 */
+// cubbitt.profileData != null ?  
