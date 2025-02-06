@@ -15,4 +15,27 @@ final class GetProfileFailureState extends LayoutState {
   GetProfileFailureState({required this.error});
 }
 
+//
 final class IndexChanged extends LayoutState {}
+
+//
+final class GetBannerLoadingState extends LayoutState {}
+
+final class GetBannerSuccessState extends LayoutState {}
+
+final class GetBannerFailureState extends LayoutState {
+  final String error;
+
+  GetBannerFailureState({required this.error});
+}
+
+//
+final class GetCategoriesLoadingState extends LayoutState {}
+
+final class GetCategoriesSuccessState extends LayoutState {}
+
+final class GetCategoriesFailureState extends LayoutState {
+  final String error;
+
+  GetCategoriesFailureState({required this.error});
+}
