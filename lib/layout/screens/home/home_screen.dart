@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
         listener: (context, state) {},
         builder: (context, state) {
           LayoutCubit cubbitt = context.read<LayoutCubit>();
-          LayoutCubit cubit = context.read<LayoutCubit>();
+
           return Scaffold(
             body: Padding(
               padding: const EdgeInsets.all(12.0),
@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                           child: PageView.builder(
                             controller: pageController,
                             physics: const BouncingScrollPhysics(),
-                            itemCount: cubbitt.banner.length,
+                            itemCount: 3,
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return Container(
@@ -112,21 +112,27 @@ class HomeScreen extends StatelessWidget {
                       : SizedBox(
                           height: 75,
                           width: double.infinity,
-                          child: ListView.builder(
+                          child: ListView.separated(
                             physics: const BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return CircleAvatar(
                                 radius: 35,
-                                child: Image.network(
+                                backgroundImage: NetworkImage(
                                   cubbitt.cateogrey[index].url!,
-                                  fit: BoxFit.cover,
                                 ),
                               );
                             },
                             itemCount: cubbitt.cateogrey.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return const SizedBox(
+                                width: 15,
+                              );
+                            },
                           ),
                         ),
+                  
                 ],
               ),
             ),

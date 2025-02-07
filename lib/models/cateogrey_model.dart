@@ -4,7 +4,7 @@ class CateogreyModel {
   String? title;
 
   CateogreyModel.fromJson({required Map<String, dynamic> data}) {
-    url = data['url'];
+    url = data['image'];
     id = data['id'];
     title = data['name'];
   }
