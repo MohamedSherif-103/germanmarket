@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:germaniatek_market/layout/cubit/layout_cubit.dart';
+import 'package:germaniatek_market/models/product_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -12,11 +13,15 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LayoutCubit()
+        // cascade operator to call methode from cubit
         ..getBannerData()
-        ..getCateogreyData(),
+        ..getCateogreyData()
+        ..getProducts(),
       child: BlocConsumer<LayoutCubit, LayoutState>(
         listener: (context, state) {},
         builder: (context, state) {
+          //instanse دا
+          // cubit من ال
           LayoutCubit cubbitt = context.read<LayoutCubit>();
 
           return Scaffold(
@@ -132,7 +137,51 @@ class HomeScreen extends StatelessWidget {
                             },
                           ),
                         ),
-                  
+                  const SizedBox(
+                    height: 22,
+                  ),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Products",
+                        style: TextStyle(
+                            fontSize: 19,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff2d4567)),
+                      ),
+                      SizedBox(
+                        width: 16,
+                      ),
+                      Text(
+                        "View all  ",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xff819f7f)),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 12,
+                  ),
+                  cubbitt.products.isEmpty
+                      ? const Center(child: CircularProgressIndicator())
+                      : GridView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: cubbitt.products.length,
+                          shrinkWrap: true,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 10,
+                                  crossAxisSpacing: 10,
+                                  childAspectRatio: .9),
+                          itemBuilder: (context, index) {
+                            return _productItem(
+                              model: cubbitt.products[index],
+                            );
+                          }),
                 ],
               ),
             ),
@@ -141,4 +190,50 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _productItem({required ProductModel model}) {
+  return Container(
+    color: Colors.grey.withOpacity(.2),
+    child: Column(
+      children: [
+        Expanded(
+          child: Image.network(model.image!, fit: BoxFit.fill),
+        ),
+        const SizedBox(height: 15),
+        Text(
+          model.name!,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: Row(
+                children: [
+                  Text("${model.price!}\$",
+                      style: const TextStyle(fontSize: 13)),
+                  const SizedBox(width: 4),
+                  Text("${model.oldPrice!}\$",
+                      style: const TextStyle(
+                          fontSize: 13, decoration: TextDecoration.lineThrough))
+                ],
+              ),
+            ),
+            GestureDetector(
+              child: IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.favorite,
+                  size: 20,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }

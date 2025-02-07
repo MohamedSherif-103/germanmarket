@@ -9,6 +9,7 @@ import 'package:germaniatek_market/layout/screens/home/home_screen.dart';
 import 'package:germaniatek_market/layout/screens/profile/profile_screen.dart';
 import 'package:germaniatek_market/models/banner_model.dart';
 import 'package:germaniatek_market/models/cateogrey_model.dart';
+import 'package:germaniatek_market/models/product_model.dart';
 import 'package:germaniatek_market/models/user_model.dart';
 import 'package:germaniatek_market/shared/constant/constants.dart';
 import 'package:http/http.dart';
@@ -107,5 +108,34 @@ class LayoutCubit extends Cubit<LayoutState> {
       emit(GetCategoriesFailureState(error: e.toString()));
     }
   }
-//                      ======================= 
+
+//                      =======================
+  List<ProductModel> products = [];
+  Future<void> getProducts() async {
+    emit(GetProductsLoadingState());
+    try {
+      Response response = await http.get(
+        Uri.parse("https://student.valuxapps.com/api/home"),
+        headers: {
+          "Authorization": token!,
+          "lang": "en",
+        },
+      );
+      var responseBodey = jsonDecode(response.body);
+
+      if (responseBodey['status'] == true) {
+        for (var item in responseBodey["data"]["products"]) {
+          products.add(ProductModel.fromJSON(data: item));
+        }
+        emit(GetProductsLoadingState());
+      } else {
+        emit(GetProductsFailureState(error: responseBodey['message']));
+      }
+    } catch (e) {
+      emit(GetProductsFailureState(error: e.toString()));
+    }
+  }
+
+// رخمه محتاجه تركيز
+  List<ProductModel> filterProduct = [];
 }

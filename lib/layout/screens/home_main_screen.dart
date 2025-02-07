@@ -16,7 +16,10 @@ class HomeMainscreen extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               centerTitle: true,
-              title: const Text("Germania Market"),
+              title: const Text(
+                "Germania Market",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               backgroundColor: Colors.teal,
             ),
             // كدا عشان أطبق اللوجيك عندى مهم جدا

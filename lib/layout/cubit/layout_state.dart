@@ -39,3 +39,14 @@ final class GetCategoriesFailureState extends LayoutState {
 
   GetCategoriesFailureState({required this.error});
 }
+
+//
+final class GetProductsLoadingState extends LayoutState {}
+
+final class GetProductsSuccessState extends LayoutState {}
+
+final class GetProductsFailureState extends LayoutState {
+  final String error;
+
+  GetProductsFailureState({required this.error});
+}
