@@ -137,5 +137,12 @@ class LayoutCubit extends Cubit<LayoutState> {
   }
 
 // رخمه محتاجه تركيز
-  List<ProductModel> filterProduct = [];
+  List<ProductModel> filteredProducts = [];
+  Future<void> filterProduct({required String input}) async {
+    filteredProducts = products
+        .where((element) =>
+            element.name!.toLowerCase().startsWith(input.toLowerCase()))
+        .toList();
+    emit(FilterProductsSuccessState());
+  }
 }

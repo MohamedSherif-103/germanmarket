@@ -50,3 +50,14 @@ final class GetProductsFailureState extends LayoutState {
 
   GetProductsFailureState({required this.error});
 }
+
+//
+final class FilterProductsLoadingState extends LayoutState {}
+
+final class FilterProductsSuccessState extends LayoutState {}
+
+final class FilterProductsFailureState extends LayoutState {
+  final String error;
+
+  FilterProductsFailureState({required this.error});
+}

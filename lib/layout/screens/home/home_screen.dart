@@ -30,6 +30,9 @@ class HomeScreen extends StatelessWidget {
               child: ListView(
                 children: [
                   TextFormField(
+                    onChanged: (input) {
+                      cubbitt.filterProduct(input: input);
+                    },
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
                         hintText: "search",
@@ -169,7 +172,9 @@ class HomeScreen extends StatelessWidget {
                       ? const Center(child: CircularProgressIndicator())
                       : GridView.builder(
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: cubbitt.products.length,
+                          itemCount: cubbitt.filteredProducts.isEmpty
+                              ? cubbitt.products.length
+                              : cubbitt.filteredProducts.length,
                           shrinkWrap: true,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
@@ -179,7 +184,9 @@ class HomeScreen extends StatelessWidget {
                                   childAspectRatio: .9),
                           itemBuilder: (context, index) {
                             return _productItem(
-                              model: cubbitt.products[index],
+                              model: cubbitt.filteredProducts.isEmpty
+                                  ? cubbitt.products[index]
+                                  : cubbitt.filteredProducts[index],
                             );
                           }),
                 ],
