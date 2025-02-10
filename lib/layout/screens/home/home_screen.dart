@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:germaniatek_market/layout/cubit/layout_cubit.dart';
 import 'package:germaniatek_market/models/product_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class HomeScreen extends StatelessWidget {
-  final pageController = PageController();
+class HomeScreen extends StatefulWidget {
   HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final pageController = PageController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,8 @@ class HomeScreen extends StatelessWidget {
         // cascade operator to call methode from cubit
         ..getBannerData()
         ..getCateogreyData()
-        ..getProducts(),
+        ..getProducts()
+        ..getFavorite(),
       child: BlocConsumer<LayoutCubit, LayoutState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -187,6 +193,7 @@ class HomeScreen extends StatelessWidget {
                               model: cubbitt.filteredProducts.isEmpty
                                   ? cubbitt.products[index]
                                   : cubbitt.filteredProducts[index],
+                              cubit: cubbitt,
                             );
                           }),
                 ],
@@ -199,7 +206,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-Widget _productItem({required ProductModel model}) {
+Widget _productItem({required ProductModel model, required LayoutCubit cubit}) {
   return Container(
     color: Colors.grey.withOpacity(.2),
     child: Column(
@@ -231,10 +238,16 @@ Widget _productItem({required ProductModel model}) {
             ),
             GestureDetector(
               child: IconButton(
-                onPressed: () {},
-                icon: const Icon(
+                onPressed: () {
+                  cubit.addOrRemoveFromFavourite(
+                      productID: model.id.toString());
+                },
+                icon: Icon(
                   Icons.favorite,
                   size: 20,
+                  color: cubit.favoruteID.contains(model.id.toString())
+                      ? Colors.red
+                      : Colors.grey,
                 ),
               ),
             ),

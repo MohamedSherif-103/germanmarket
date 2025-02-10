@@ -40,7 +40,7 @@ final class GetCategoriesFailureState extends LayoutState {
   GetCategoriesFailureState({required this.error});
 }
 
-//
+//////////////////////////////////////////////////////
 final class GetProductsLoadingState extends LayoutState {}
 
 final class GetProductsSuccessState extends LayoutState {}
@@ -51,7 +51,7 @@ final class GetProductsFailureState extends LayoutState {
   GetProductsFailureState({required this.error});
 }
 
-//
+/////////////////////////////////////////////
 final class FilterProductsLoadingState extends LayoutState {}
 
 final class FilterProductsSuccessState extends LayoutState {}
@@ -61,3 +61,40 @@ final class FilterProductsFailureState extends LayoutState {
 
   FilterProductsFailureState({required this.error});
 }
+
+/////////////////////////////////////////////
+final class GetFavouriteSuccessState extends LayoutState {}
+
+final class GetFavouriteFailureState extends LayoutState {
+  final String error;
+
+  GetFavouriteFailureState({required this.error});
+}
+
+/////////////////////////////////////////////
+final class AddOrRemoveFromFavouriteSuccessState extends LayoutState {}
+
+final class AddOrRemoveFromFavouriteFailureState extends LayoutState {
+  final String error;
+
+  AddOrRemoveFromFavouriteFailureState({required this.error});
+}
+
+///////////////////////////////////////////
+final class GetCartSuccessState extends LayoutState {}
+
+final class GetCartFailureState extends LayoutState {
+  final String error;
+
+  GetCartFailureState({required this.error});
+}
+
+/////////////////////////////////////////
+final class AddOrRemoveFromCartSuccessState extends LayoutState {}
+
+final class AddOrRemoveFromCartFailureState extends LayoutState {
+  final String error;
+
+  AddOrRemoveFromCartFailureState({required this.error});
+}
+////////////////////////////////////////

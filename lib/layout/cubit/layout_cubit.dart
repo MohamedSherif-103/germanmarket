@@ -19,7 +19,7 @@ part 'layout_state.dart';
 
 class LayoutCubit extends Cubit<LayoutState> {
   LayoutCubit() : super(LayoutCubitInitial());
-  //                     =======================
+  //=====================================================
   int bottomNavigationCurrentIndex = 0;
   List<Widget> layoutScreenLists = [
     HomeScreen(),
@@ -33,7 +33,7 @@ class LayoutCubit extends Cubit<LayoutState> {
     emit(IndexChanged());
   }
 
-//                       ======================
+//===================================================
   UserModel? profileData;
   Future<void> getProfileUserData() async {
     emit(GetProfileLoadingState());
@@ -59,7 +59,7 @@ class LayoutCubit extends Cubit<LayoutState> {
     }
   }
 
-//                      =======================
+//===================================================
   List<BannerModel> banner = [];
   Future<void> getBannerData() async {
     emit(GetBannerLoadingState());
@@ -84,7 +84,7 @@ class LayoutCubit extends Cubit<LayoutState> {
     }
   }
 
-//                      =======================
+//====================================================
   List<CateogreyModel> cateogrey = [];
   Future<void> getCateogreyData() async {
     emit(GetCategoriesLoadingState());
@@ -109,7 +109,7 @@ class LayoutCubit extends Cubit<LayoutState> {
     }
   }
 
-//                      =======================
+//=====================================================
   List<ProductModel> products = [];
   Future<void> getProducts() async {
     emit(GetProductsLoadingState());
@@ -136,7 +136,7 @@ class LayoutCubit extends Cubit<LayoutState> {
     }
   }
 
-// رخمه محتاجه تركيز
+//=====================================================
   List<ProductModel> filteredProducts = [];
   Future<void> filterProduct({required String input}) async {
     filteredProducts = products
@@ -145,4 +145,122 @@ class LayoutCubit extends Cubit<LayoutState> {
         .toList();
     emit(FilterProductsSuccessState());
   }
+
+//=====================================================
+  List<ProductModel> favorites = [];
+  // set مفيش تكرار
+  Set<String> favoruteID = {};
+  Future<void> getFavorite() async {
+    favorites.clear();
+    try {
+      Response response = await http.get(
+        Uri.parse("https://student.valuxapps.com/api/favorites"),
+        headers: {
+          "Authorization": token!,
+          "lang": "en",
+        },
+      );
+      var responseBodey = jsonDecode(response.body);
+
+      if (responseBodey['status'] == true) {
+        for (var item in responseBodey["data"]["data"]) {
+          favorites.add(ProductModel.fromJSON(data: item['product']));
+          favoruteID.add(item['product']['id'].toString());
+        }
+        print(" favorites number is : ${favorites.length}");
+        emit(GetFavouriteSuccessState());
+      } else {
+        emit(GetFavouriteFailureState(error: responseBodey['message']));
+      }
+    } catch (e) {
+      emit(GetFavouriteFailureState(error: e.toString()));
+    }
+  }
+
+//=====================================================
+  Future<void> addOrRemoveFromFavourite({required String productID}) async {
+    try {
+      Response response = await http.post(
+          Uri.parse("https://student.valuxapps.com/api/favorites"),
+          headers: {
+            "Authorization": token!,
+            "lang": "en",
+          },
+          body: {
+            "product_id": productID,
+          });
+      var responseBodey = jsonDecode(response.body);
+
+      if (responseBodey['status'] == true) {
+        if (favoruteID.contains(productID) == true) {
+          favoruteID.remove(productID);
+        } else {
+          favoruteID.add(productID);
+        }
+        await getFavorite();
+        // favorites
+        //     .add(ProductModel.fromJSON(data: responseBodey["data"]["product"]));
+        emit(AddOrRemoveFromFavouriteSuccessState());
+      } else {
+        emit(AddOrRemoveFromFavouriteFailureState(
+            error: responseBodey['message']));
+      }
+    } catch (e) {
+      emit(AddOrRemoveFromFavouriteFailureState(error: e.toString()));
+    }
+  }
+
+//=====================================================
+  List<ProductModel> carets = [];
+  Set<String> cartsID = {};
+  int totalPrice = 0;
+  Future<void> getCart() async {
+    carets.clear();
+    Response response = await http.get(
+      Uri.parse("https://student.valuxapps.com/api/carts"),
+      headers: {
+        "Authorization": token!,
+        "lang": "en",
+      },
+    );
+    var responseBodey = jsonDecode(response.body);
+    totalPrice = responseBodey['data']["total"];
+    if (responseBodey['status'] == true) {
+      for (var item in responseBodey['data']['cart_items']) {
+        cartsID.add(item['product']['id'].toString());
+        carets.add(ProductModel.fromJSON(data: item['product']));
+      }
+      print("Cartes Length is : ${carets.length}");
+      emit(GetCartSuccessState());
+    } else {
+      emit(GetCartFailureState(error: responseBodey['message']));
+    }
+  }
+
+//=====================================================
+  Future<void> addOrRemoveFromCart({required String id}) async {
+    Response response = await http
+        .post(Uri.parse("https://student.valuxapps.com/api/carts"), body: {
+      "product_id": id,
+    }, headers: {
+      "Authorization": token!,
+      "lang": "en",
+    });
+    var responseBodey = jsonDecode(response.body);
+    if (responseBodey['status'] == true) {
+      cartsID.contains(id) == true ? cartsID.remove(id) : cartsID.add(id);
+      await getCart();
+      // if (carets.any((element) => element.id == id)) {
+      //   carets.removeWhere((element) => element.id == id);
+      // } else {
+      //   carets.add(ProductModel.fromJSON(data: responseBodey['data']));
+      // }
+      // totalPrice = responseBodey['data']["total"];
+      emit(AddOrRemoveFromCartSuccessState());
+    } else {
+      emit(AddOrRemoveFromCartFailureState(error: responseBodey['message']));
+    }
+  }
+
+//=====================================================
 }
