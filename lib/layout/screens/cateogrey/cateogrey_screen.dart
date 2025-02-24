@@ -14,9 +14,18 @@ class CateogreyScreen extends StatelessWidget {
         builder: (context, state) {
           LayoutCubit cubit = context.read<LayoutCubit>();
           return Scaffold(
-            
+            appBar: AppBar(
+                centerTitle: true,
+                foregroundColor: Colors.white,
+                title: const Text(
+                  'Cateogries',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w700, color: Colors.white),
+                ),
+                backgroundColor: Colors.teal),
+            backgroundColor: const Color(0xfffdfbda),
             body: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 12),
               child: GridView.builder(
                 itemCount: cubit.cateogrey.length,
                 shrinkWrap: true,

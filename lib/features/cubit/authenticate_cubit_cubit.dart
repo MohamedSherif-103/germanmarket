@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
+import 'package:germaniatek_market/shared/constant/constants.dart';
 import 'package:germaniatek_market/shared/network/local_network.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -58,6 +59,10 @@ class AuthenticateCubit extends Cubit<AuthenticateState> {
       if (responseBody['status'] == true) {
         await CacheNetwork.insertToCash(
             key: 'token', value: responseBody['data']['token']);
+        await CacheNetwork.insertToCash(key: 'password', value: password);
+        token = CacheNetwork.getCacheData(key: 'token');
+        currentPassword = CacheNetwork.getCacheData(key: 'password');
+
         emit(LoginSuccessState());
         return true;
       } else {

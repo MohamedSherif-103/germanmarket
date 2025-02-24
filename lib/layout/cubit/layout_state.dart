@@ -52,15 +52,15 @@ final class GetProductsFailureState extends LayoutState {
 }
 
 /////////////////////////////////////////////
-final class FilterProductsLoadingState extends LayoutState {}
+//final class FilterProductsLoadingState extends LayoutState {}
 
 final class FilterProductsSuccessState extends LayoutState {}
 
-final class FilterProductsFailureState extends LayoutState {
-  final String error;
+// final class FilterProductsFailureState extends LayoutState {
+//   final String error;
 
-  FilterProductsFailureState({required this.error});
-}
+//   FilterProductsFailureState({required this.error});
+// }
 
 /////////////////////////////////////////////
 final class GetFavouriteSuccessState extends LayoutState {}
@@ -98,3 +98,13 @@ final class AddOrRemoveFromCartFailureState extends LayoutState {
   AddOrRemoveFromCartFailureState({required this.error});
 }
 ////////////////////////////////////////
+
+final class ChangePasswordLoadingState extends LayoutState {}
+
+final class ChangePasswordSuccessState extends LayoutState {}
+
+final class ChangePasswordFailureState extends LayoutState {
+  final String error;
+
+  ChangePasswordFailureState({required this.error});
+}

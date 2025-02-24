@@ -12,6 +12,7 @@ import 'package:germaniatek_market/models/cateogrey_model.dart';
 import 'package:germaniatek_market/models/product_model.dart';
 import 'package:germaniatek_market/models/user_model.dart';
 import 'package:germaniatek_market/shared/constant/constants.dart';
+import 'package:germaniatek_market/shared/network/local_network.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,7 +24,6 @@ class LayoutCubit extends Cubit<LayoutState> {
   int bottomNavigationCurrentIndex = 0;
   List<Widget> layoutScreenLists = [
     HomeScreen(),
-    const CateogreyScreen(),
     const FavoriteScreen(),
     const CartScreen(),
     const ProfileScreen()
@@ -263,4 +263,31 @@ class LayoutCubit extends Cubit<LayoutState> {
   }
 
 //=====================================================
+  Future<void> changePassword(
+      {required String userCurrentPassword,
+      required String newPassword}) async {
+    emit(ChangePasswordLoadingState());
+    Response response = await http.post(
+        Uri.parse(
+          "https://student.valuxapps.com/api/change-password",
+        ),
+        body: {
+          "current_password": userCurrentPassword,
+          "new_password": newPassword,
+        },
+        headers: {
+          "Authorization": token!,
+          "Content-Type": "application/json",
+          "lang": "en",
+        });
+    var responseBodey = jsonDecode(response.body);
+
+    if (responseBodey['status'] == true) {
+      await CacheNetwork.insertToCash(key: 'password', value: newPassword);
+      currentPassword = await CacheNetwork.getCacheData(key: "password");
+      emit(ChangePasswordSuccessState());
+    } else {
+      emit(ChangePasswordFailureState(error: responseBodey['message']));
+    }
+  }
 }

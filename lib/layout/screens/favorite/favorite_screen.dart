@@ -8,7 +8,9 @@ class FavoriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LayoutCubit()..getFavorite(),
+      create: (context) => LayoutCubit()
+        ..getFavorite()
+        ..filterProduct(input: ''),
       child: BlocConsumer<LayoutCubit, LayoutState>(
         listener: (context, state) {},
         builder: (context, state) {
@@ -19,24 +21,24 @@ class FavoriteScreen extends StatelessWidget {
                 const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.5),
             child: Column(
               children: [
-                TextFormField(
-                  onChanged: (input) {
-                    // cubbitt.filterProduct(input: input);
-                  },
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.zero,
-                      hintText: "search",
-                      prefixIcon: const Icon(Icons.search),
-                      suffixIcon: const Icon(Icons.clear),
-                      filled: true,
-                      fillColor: Colors.grey.withOpacity(0.2),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(50),
-                      )),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
+                // TextFormField(
+                //   onChanged: (input) {
+                //     cubit.filterProduct(input: input);
+                //   },
+                //   decoration: InputDecoration(
+                //       contentPadding: EdgeInsets.zero,
+                //       hintText: "search",
+                //       prefixIcon: const Icon(Icons.search),
+                //       suffixIcon: const Icon(Icons.clear),
+                //       filled: true,
+                //       fillColor: Colors.grey.withOpacity(0.2),
+                //       border: OutlineInputBorder(
+                //         borderRadius: BorderRadius.circular(50),
+                //       )),
+                // ),
+                // const SizedBox(
+                //   height: 12,
+                // ),
                 cubit.favorites.isEmpty
                     ? const Center(child: CircularProgressIndicator())
                     : Expanded(
@@ -80,7 +82,7 @@ class FavoriteScreen extends StatelessWidget {
                                           onPressed: () {
                                             cubit.addOrRemoveFromFavourite(
                                                 productID: cubit
-                                                    .favorites[index]
+                                                    .favorites[index].id
                                                     .toString());
                                           },
                                           color: const Color(0xff2d4569),

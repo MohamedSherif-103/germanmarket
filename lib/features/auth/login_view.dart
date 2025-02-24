@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:germaniatek_market/features/cubit/authenticate_cubit_cubit.dart';
 import 'package:germaniatek_market/features/nav_bar/ui/main_home_view.dart';
+import 'package:germaniatek_market/layout/screens/home_main_screen.dart';
 import 'package:germaniatek_market/widgwts/custom_row.dart';
 import 'package:germaniatek_market/widgwts/custom_text_button.dart';
 import 'package:germaniatek_market/widgwts/custom_textformfield.dart';
@@ -25,10 +26,7 @@ class _LoginViewState extends State<LoginView> {
       create: (context) => AuthenticateCubit(),
       child: BlocConsumer<AuthenticateCubit, AuthenticateState>(
         listener: (context, state) {
-          if (state is LoginSuccessState) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Center(child: Text("Success Login"))));
-          } else if (state is LoginFailureState) {
+          if (state is LoginFailureState) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Center(child: Text(state.message)),
             ));
@@ -136,7 +134,7 @@ class _LoginViewState extends State<LoginView> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        MainHomeView()));
+                                                        const HomeMainscreen()));
                                           }
                                         }
 

@@ -37,8 +37,6 @@ class HomeMainscreen extends StatelessWidget {
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.category), label: "Cateogrey"),
-                BottomNavigationBarItem(
                     icon: Icon(Icons.favorite), label: "Favorite"),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.shopping_cart), label: "Cart"),
