@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:germaniatek_market/features/auth/forgot_password.dart';
 import 'package:germaniatek_market/features/auth/login_view.dart';
 import 'package:germaniatek_market/features/auth/signup_view.dart';
-import 'package:germaniatek_market/features/nav_bar/ui/main_home_view.dart';
+
 import 'package:germaniatek_market/layout/screens/home_main_screen.dart';
 import 'package:germaniatek_market/shared/constant/constants.dart';
 import 'package:germaniatek_market/shared/network/local_network.dart';

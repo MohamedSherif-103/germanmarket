@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:germaniatek_market/layout/screens/cart/cart_screen.dart';
-import 'package:germaniatek_market/layout/screens/cateogrey/cateogrey_screen.dart';
 import 'package:germaniatek_market/layout/screens/favorite/favorite_screen.dart';
 import 'package:germaniatek_market/layout/screens/home/home_screen.dart';
 import 'package:germaniatek_market/layout/screens/profile/profile_screen.dart';
@@ -213,7 +212,7 @@ class LayoutCubit extends Cubit<LayoutState> {
 //=====================================================
   List<ProductModel> carets = [];
   Set<String> cartsID = {};
-  int totalPrice = 0;
+  double totalPrice = 0;
   Future<void> getCart() async {
     carets.clear();
     Response response = await http.get(
@@ -256,6 +255,7 @@ class LayoutCubit extends Cubit<LayoutState> {
       //   carets.add(ProductModel.fromJSON(data: responseBodey['data']));
       // }
       // totalPrice = responseBodey['data']["total"];
+
       emit(AddOrRemoveFromCartSuccessState());
     } else {
       emit(AddOrRemoveFromCartFailureState(error: responseBodey['message']));
