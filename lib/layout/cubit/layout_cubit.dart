@@ -223,7 +223,7 @@ class LayoutCubit extends Cubit<LayoutState> {
       },
     );
     var responseBodey = jsonDecode(response.body);
-    totalPrice = responseBodey['data']["total"];
+    totalPrice = responseBodey['data']["total"].toDouble();
     if (responseBodey['status'] == true) {
       for (var item in responseBodey['data']['cart_items']) {
         cartsID.add(item['product']['id'].toString());
@@ -288,6 +288,29 @@ class LayoutCubit extends Cubit<LayoutState> {
       emit(ChangePasswordSuccessState());
     } else {
       emit(ChangePasswordFailureState(error: responseBodey['message']));
+    }
+  }
+
+//=====================================================
+  List<ProductModel> subCateogres = [];
+  Future<void> getSubCateogrey() async {
+    Response response = await http.get(
+      Uri.parse("https://student.valuxapps.com/api/categories"),
+      headers: {
+        "lang": "en",
+      },
+    );
+    var responseBodey = jsonDecode(response.body);
+    // =====
+
+    if (responseBodey['status'] == true) {
+      // for (var item in responseBodey["data"]["data"]) {
+      //   favorites.add(ProductModel.fromJSON(data: item['product']));
+      //   favoruteID.add(item['product']['id'].toString());
+      // }
+      emit(GetSubCategoriesSuccessState());
+    } else {
+      emit(GetSubCategoriesFailureState(error: responseBodey['message']));
     }
   }
 }

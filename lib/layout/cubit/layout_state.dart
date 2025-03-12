@@ -99,6 +99,18 @@ final class AddOrRemoveFromCartFailureState extends LayoutState {
 }
 ////////////////////////////////////////
 
+final class GetSubCategoriesLoadingState extends LayoutState {}
+
+final class GetSubCategoriesSuccessState extends LayoutState {}
+
+final class GetSubCategoriesFailureState extends LayoutState {
+  final String error;
+
+  GetSubCategoriesFailureState({required this.error});
+}
+
+///////////////////////////////////////
+
 final class ChangePasswordLoadingState extends LayoutState {}
 
 final class ChangePasswordSuccessState extends LayoutState {}

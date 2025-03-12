@@ -36,22 +36,25 @@ class CateogreyScreen extends StatelessWidget {
                   crossAxisCount: 2,
                 ),
                 itemBuilder: (context, index) {
-                  return Container(
-                    child: Column(
-                      children: [
-                        Expanded(
-                            child: Image.network(
-                          cubit.cateogrey[index].url!,
-                          fit: BoxFit.fill,
-                        )),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                          cubit.cateogrey[index].title!,
-                          style: const TextStyle(fontWeight: FontWeight.w700),
-                        ),
-                      ],
+                  return InkWell(
+                    onTap: () {},
+                    child: Container(
+                      child: Column(
+                        children: [
+                          Expanded(
+                              child: Image.network(
+                            cubit.cateogrey[index].url!,
+                            fit: BoxFit.fill,
+                          )),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          Text(
+                            cubit.cateogrey[index].title!,
+                            style: const TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
